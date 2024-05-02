@@ -1,0 +1,192 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    
+}
+
+
+
+body {
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.magazine-cover {
+    width: 80%;
+    max-width: 1200px;
+    background: #EAD2BA;
+    box-shadow: 0px 8px 6px rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+
+.title-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.magazine-cover h1, .magazine-cover h2{
+    font-family: "thrillers", sans-serif;
+    margin: 0;
+    padding: 0;
+    font-size: calc(6vw + 20px);
+    line-height: 1.1;
+    
+    display: flex;
+    text-align: justify;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.magazine-cover h1{
+    font-style: black;
+    font-weight: 900;
+    letter-spacing: 0.3em;
+}
+
+
+.magazine-cover h2 {
+    font-size: calc(3vw + 15px);
+    font-weight: 300;
+    font-style: light;
+    margin-bottom: 1em;
+    letter-spacing: 0.43em;
+}
+
+.small-of{
+    font-size: 30px;
+    vertical-align: super;
+}
+
+
+.main-content {
+    display: grid;
+    grid-template-columns: 40% 60%;
+}
+
+.cover-text {
+    margin-top: 2.4em;
+    margin-bottom: 100px;
+    font-family: "semplicitapro", sans-serif;
+    font-weight: 400;
+    font-style: medium;
+    font-size: 15px;
+    text-align: center;
+    align-content: center; 
+}
+
+.navigation a {
+    font-family: "ltc-bodoni-175", serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 30px;
+    display: block;
+    margin: 10px 30px;
+    margin-top: 100px;
+    text-decoration: none;
+   
+}
+
+.navigation h3{
+    font-family: "semplicitapro", sans-serif;
+    font-weight: 400;
+    font-style: medium;
+    font-size: 15px;
+
+}
+.about {
+    font-family: "filmotype-lacrosse", sans-serif;
+    font-size: 40px;
+    font-style: normal;
+}
+
+figure {
+    margin: 0;
+    padding-left: 20px; /* Adjust as needed */
+}
+
+img {
+    width: 80%;
+    height: auto;
+    object-fit: cover;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content vertically */
+    padding: 60px 60px; /* Reduced padding for tighter spacing */
+    font-size: 16px; /* Adjust font size as needed */
+    background: transparent; /* Ensure no background color */
+    font-family: "semplicitapro", sans-serif;
+}
+
+.footer-upper1 {
+    
+    font-weight: 500;
+    font-style: normal;  
+    text-align: center;
+    width: 100%; /* Full width to center the text properly */
+    margin-top: 0;
+    margin-bottom: 3px; /* Space between author and date/price */
+    font-size: 30px;
+    word-spacing: 0.5em;
+
+}
+.footer-upper2 {
+    
+    text-align: center;
+    width: 100%; /* Full width to center the text properly */
+    margin-bottom: 34px; /* Space between author and date/price */
+    font-size: 15px;
+    font-style: medium;
+    font-weight: 500;
+}
+
+.footer-lower {
+    display: flex;
+    width: 100%; /* Full width to utilize the space */
+    justify-content: space-between; /* Align date and price on each side */
+    font-size: 24px;
+    
+}
+
+.date, .price {
+    font-family: "chapman", sans-serif;
+    font-weight: 900;
+    font-style: italic; 
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+}
+
+.author1, .author2 {
+    margin: 0; /* No margin to keep layout tight */
+    padding: 0; /* No padding to keep layout tight */
+   
+}
+
+@media (max-width: 768px) {
+    .magazine-cover {
+        width: 95%;
+    }
+
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+
+    footer {
+        flex-direction: column;
+        align-items: center;
+    }
+}
