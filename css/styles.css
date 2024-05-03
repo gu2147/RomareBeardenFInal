@@ -5,6 +5,7 @@
     box-sizing: border-box;
     text-decoration: none;
     list-style: none;
+    color: #000;
     
 }
 
@@ -16,6 +17,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    /*transform: scale(0.6);*/
 }
 
 .magazine-cover {
@@ -33,6 +35,13 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
+}
+
+.navigation h4{
+    padding-bottom: 30px ;
+    text-align: center;
+    font-size: 60px;
+    line-height: 1;
 }
 
 .magazine-cover h1, .magazine-cover h2{
@@ -61,7 +70,7 @@ body {
     font-weight: 300;
     font-style: light;
     margin-bottom: 1em;
-    letter-spacing: 0.43em;
+    letter-spacing: 0.41em;
 }
 
 .small-of{
@@ -74,6 +83,9 @@ body {
     display: grid;
     grid-template-columns: 40% 60%;
 }
+.intro{
+    text-align: left;
+}
 
 .cover-text {
     margin-top: 2.4em;
@@ -85,17 +97,25 @@ body {
     text-align: center;
     align-content: center; 
 }
+}
 
 .navigation a {
     font-family: "ltc-bodoni-175", serif;
     font-weight: 700;
     font-style: italic;
     font-size: 30px;
+    color: #000;
     display: block;
     margin: 10px 30px;
     margin-top: 100px;
     text-decoration: none;
-   
+    text-align: left;
+    
+}
+
+.navigation a:hover{
+    text-decoration: underline;
+    color: #000;
 }
 
 .navigation h3{
@@ -103,6 +123,9 @@ body {
     font-weight: 400;
     font-style: medium;
     font-size: 15px;
+    
+    text-align: left;
+    
 
 }
 .about {
