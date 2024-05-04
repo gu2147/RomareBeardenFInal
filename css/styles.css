@@ -9,13 +9,15 @@
 }
 
 body {
+    margin: 0;
+    padding: 0;
     background: white;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    transform: scale(0.6);  /* Consider adjusting this scaling for better responsiveness */
-    overflow: hidden;
+    transform: scale(0.5);  /* Consider adjusting this scaling for better responsiveness */
+   
 }
 
 .magazine-cover {
@@ -73,10 +75,14 @@ body {
 }
 
 .cover-text {
-    flex: 0.8; /* Flex grow */
-    padding: 0 20px;
+    flex: 0.8;  /* Flex grow */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* Center content vertically */
+    align-items: flex-start;  /* Align items to the start horizontally */
+    padding: 20px 20px 0 20px; /* Add padding to the top */
     font-family: "semplicitapro", sans-serif;
-    text-align: center;
+    text-align: left;  /* Align text to the left */
 }
 
 figure {
@@ -161,6 +167,9 @@ footer {
     margin-left: 20px;
 }
 
+.navigation{
+    padding-top: 85px;
+}
 .navigation a {
     font-family: "ltc-bodoni-175", serif;
     font-weight: 600;
@@ -180,30 +189,25 @@ footer {
 
 .navigation h3{
     font-family: "semplicitapro", sans-serif;
-    font-weight: 400;
+    font-weight: 500;
     font-style: medium;
     font-size: 20px;
-    text-align: left;
-    margin-bottom: 5px;
+    text-align: center;
+    margin-bottom: 0px;
     margin-left: 30px;
+    margin-top: 15px;
 }
 .navigation h4{
-    padding-bottom: 5px ;
+    padding-bottom: 0;
+    padding-top: 10px;
     text-align: center;
     font-size: 60px;
     line-height: 1;
     margin-top: 25px;
-    margin-right: 160px;
+    margin-right: 0;
 }
 
-.navigation h5{
-    font-family: "semplicitapro", sans-serif;
-    font-weight: 400;
-    font-style: medium;
-    font-size: 20px;
-    text-align: left;
-    margin-left: 30px;
-}
+
 
 .learn{
     margin-left: 25px;
