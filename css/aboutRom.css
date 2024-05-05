@@ -1,0 +1,178 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    color: #343131;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+    transform: scale(0.56);  /* Consider adjusting this scaling for better responsiveness */
+    transform-origin: top center;
+    
+   
+}
+.gallery-container {
+    max-width: 1200px; /* Maximum size of the cover */
+    width: 80%;
+    padding-top: 20px;
+    padding-bottom: 640px;
+    background: #EAD2BA;
+    display: grid;
+    gap: 20px;
+    align-items: center;
+    
+}
+.thick-line, .medium-line, .thin-line {
+    position: absolute;
+    left: 30px; /* Starts a bit from the left, adjust as needed */
+    right: 30px; /* Ends a bit from the right, adjust as needed */
+
+}
+
+.thick-line {
+    height: 3px;
+    background-color: rgb(14, 14, 14);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;  /* Adjusts to the padding of the header-content */
+    background-color: black;
+    border: none;
+}
+
+.medium-line {
+    height: 1.5px;
+    background-color: rgb(14, 14, 14);
+    background-color: rgb(14, 14, 14);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;  /* Adjusts to the padding of the header-content */
+    background-color: black;
+    border: none;
+    top: 50px;
+}
+
+.thin-line {
+    position: absolute;
+    bottom: 63px;
+    left: 0;
+    width: 100%;  /* Adjusts to the padding of the header-content */
+    height: 1px;
+    border: none;
+    background-color: rgb(14, 14, 14);
+    
+}
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 30px;  /* Adjust this value to control the line's start and end relative to the container edges */
+    position: relative;  /* Allows absolute positioning inside */
+}
+
+.tooltip-trigger {
+    position: relative; /* Necessary for absolute positioning of the tooltip */
+    cursor: pointer; /* Changes the cursor to indicate it's clickable */
+    text-decoration: none; /* Optional: Removes underline from the link */
+}
+
+.tooltip-text {
+    position: absolute;
+    bottom: 120%; /* Position above the link */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    display: none; /* Hidden by default */
+    z-index: 1000; /* Make sure it's above other elements */
+    white-space: nowrap; /* Prevents the text from wrapping */
+}
+
+.tooltip-trigger:hover .tooltip-text {
+    display: block; /* Show the tooltip on hover */
+    
+}
+
+
+.page1Title{
+    font-family: "adorn-copperplate", sans-serif;
+    font-weight: 300;
+    font-style: light;
+    text-align: center;
+    font-size: 24px;
+}
+
+.descriptions{
+    font-weight: 400;
+    font-style: italic;
+    font-size: 20px;
+}
+/* Consistent Styles Across All Gallery Items */
+
+
+.leftHeader, .titleHeader, .dateHeader {
+    font-family: "ltc-goudy-oldstyle-pro", serif;
+    font-weight: 600;
+    font-style: normal;
+    flex: 1;  /* Distributes space evenly */
+    position: relative;  /* Keeps text within the bounds of the flex container */
+    text-align: center;
+}
+.leftHeader{
+    text-align: left;
+    font-size: 20px;
+}
+.ome{
+    font-size: 16px;
+}
+.titleHeader{
+    text-align: center;
+    font-size: 24px;
+}
+
+.dateHeader{
+    text-align: right;
+    font-family: "ltc-goudy-oldstyle-pro", serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 20px;
+}
+.restDate{
+    font-size: 16px;
+}
+
+.gallery-item {
+    display: flex;
+    gap: 20px; /* Space between text and image */
+    align-items: center; /* Centers content vertically */
+    padding-bottom: 5px;
+}
+
+.gallery-item img {
+    padding-left: 40px;
+    width: 100%;
+    /* height: auto; Adjusts height automatically */
+    /*box-shadow: 30px 4px 6px rgba(0,0,0,0.1);*/
+   height: auto;
+}
+
+.title{
+    font-family: 'ltc-goudy-oldstyle-pro', serif;
+    font-size: 18px; /* Adjusts title size */
+    font-weight: bold;
+    text-align: center;
+}

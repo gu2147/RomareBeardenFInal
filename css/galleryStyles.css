@@ -82,10 +82,32 @@ body{
     position: relative;  /* Allows absolute positioning inside */
 }
 
-.header-content a:hover{
-    color: gray;
-    text-decoration: underline;
+.tooltip-trigger {
+    position: relative; /* Necessary for absolute positioning of the tooltip */
+    cursor: pointer; /* Changes the cursor to indicate it's clickable */
+    text-decoration: none; /* Optional: Removes underline from the link */
 }
+
+.tooltip-text {
+    position: absolute;
+    bottom: 120%; /* Position above the link */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    display: none; /* Hidden by default */
+    z-index: 1000; /* Make sure it's above other elements */
+    white-space: nowrap; /* Prevents the text from wrapping */
+}
+
+.tooltip-trigger:hover .tooltip-text {
+    display: block; /* Show the tooltip on hover */
+    
+}
+
 
 .page1Title{
     font-family: "adorn-copperplate", sans-serif;
@@ -143,11 +165,11 @@ body{
 }
 
 .gallery-item img {
-    margin-top: 40px;
     padding-left: 40px;
     width: 100%;
-    height: auto; /* Adjusts height automatically */
+    /* height: auto; Adjusts height automatically */
     /*box-shadow: 30px 4px 6px rgba(0,0,0,0.1);*/
+    max-height: 50vh;
 }
 
 .title{
@@ -168,12 +190,16 @@ body{
 img {
     
     width: 100%;
-    height: auto; /* Adjusts height automatically */
+     /* Adjusts height automatically */
     
 
 }
 .gallery-item img, .gallery-item3 img{
     margin-left: auto;  /* Pushes the image to the far right */
+}
+
+.gallery-item, .gallery-item2, .gallery-item3, .gallery-item4{
+    margin-top: 40px;
 }
 
 .gallery-item2, .gallery-item4 {
@@ -186,7 +212,7 @@ img {
    padding-top: 20px;
    padding-right: 50px;
    margin-right: auto;
-   max-height: 80vh; /* Adjust image height to prevent overflow */
+   max-height: 70vh; /* Adjust image height to prevent overflow */
    width: auto; /* Maintains aspect ratio */
    max-width: 100%; /* Prevents image from exceeding item width */
 }

@@ -13,6 +13,21 @@ body{
   min-height: 100vh;
   background: #EAD2BA;
 }
+.navBar {
+  margin-bottom: auto;
+  margin-right: auto;
+  margin-right: 10px;
+}
+.backHome{
+  font-family: "adorn-copperplate", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  color: black;
+  text-decoration: underline;
+  font-size: 20px;
+}
+
+
 .container{
   display: flex;
   width: 100%;
