@@ -10,44 +10,21 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  margin-top: 60px;
   background: #EAD2BA;
-  overflow: hidden;
-  
 }
-.navBar {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  
-}
-.backHome{
-  font-family: "adorn-copperplate", sans-serif;
-  font-weight: 600;
-  font-style: normal;
-  color: black;
-  text-decoration: underline;
-  font-size: 20px;
-}
-
-
 .container{
-  display: grid;
-  grid-template-columns: 210px 1fr 1fr ;
+  display: flex;
   width: 100%;
   gap: 10px;
   padding: 10px;
-  align-items: start;
   max-width: 1500px;
-  margin: auto;
 }
-
 section{
   background: #fff;
   border-radius: 7px;
 }
 .tools-board{
-  grid-column: 1;
   width: 210px;
   padding: 15px 22px 0;
 }
@@ -160,24 +137,29 @@ section{
   border: 1px solid #4A98F7;
 }
 .drawing-board{
-  grid-column: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+  flex: 1;
+  
   overflow: hidden;
-  min-width: 500px;
-  min-height: 600px;
-  max-height: 60%;
 }
 .drawing-board canvas{
-  min-width: 500px;
-  min-height: 600px;
   width: 100%;
   height: 100%;
-  z-index: 2;
 }
 
+.navBar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  
+}
+.backHome{
+  font-family: "adorn-copperplate", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  color: black;
+  text-decoration: underline;
+  font-size: 20px;
+}
 .image-gallery {
   grid-column: 3;
   display: flex;
@@ -188,8 +170,8 @@ section{
   justify-content: center;
   height: auto;
   position: relative;
-  padding: 0 50px;
-  background:#EAD2BA;
+  padding: 0 30px;
+  /*background:#EAD2BA;*/
 
 }
 
@@ -215,7 +197,7 @@ section{
 }
 .next-image{
   right: 30px;
-}
+} 
 .paperOverlay {
   position: absolute;
   top: 0px;

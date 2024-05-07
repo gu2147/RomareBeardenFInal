@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Test Canvas</title>
+<style>
+  body, html { height: 100%; margin: 0; display: flex; justify-content: center; align-items: center; }
+  canvas { border: 1px solid black; }
+</style>
+</head>
+<body>
+<canvas id="testCanvas"></canvas>
+<script>
+  var canvas = document.getElementById('testCanvas');
+  var ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.fillStyle = 'red';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  canvas.addEventListener('mousemove', function(evt) {
+      var mousePos = getMousePos(canvas, evt);
+      console.log(`Mouse position: ${mousePos.x}, ${mousePos.y}`);
+  });
+
+  function getMousePos(canvas, evt) {
+      var rect = canvas.getBoundingClientRect();
+      return {
+          x: (evt.clientX - rect.left) * (canvas.width / rect.width),
+          y: (evt.clientY - rect.top) * (canvas.height / rect.height)
+      };
+  }
+</script>
+</body>
+</html>
