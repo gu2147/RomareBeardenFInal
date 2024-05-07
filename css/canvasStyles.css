@@ -12,6 +12,7 @@ body{
   justify-content: center;
   margin-top: 60px;
   background: #EAD2BA;
+  overflow: hidden; 
 }
 .container{
   display: flex;
@@ -19,6 +20,7 @@ body{
   gap: 10px;
   padding: 10px;
   max-width: 1500px;
+  max-height: 600px;
 }
 section{
   background: #fff;

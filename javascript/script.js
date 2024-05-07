@@ -15,6 +15,9 @@ selectedTool = "brush",
 brushWidth = 5,
 selectedColor = "#000";
 
+
+
+
 const setCanvasBackground = () => {
     // setting whole canvas background to white, so the downloaded img background will be white
     ctx.fillStyle = "#fff";
@@ -22,7 +25,7 @@ const setCanvasBackground = () => {
     ctx.fillStyle = selectedColor; // setting fillstyle back to the selectedColor, it'll be the brush color
 }
 
-function resizeCanvas() {
+/*function resizeCanvas() {
     const containerWidth = document.querySelector('.container').clientWidth - 210; // Subtract toolbar width
     const canvas = document.querySelector(".drawing-board canvas");
     const scale = window.devicePixelRatio; // For high DPI screens
@@ -36,15 +39,31 @@ function resizeCanvas() {
     ctx.scale(scale, scale); // Adjust drawing scale to match DPI
 }
 
-window.addEventListener('resize', resizeCanvas);
+window.addEventListener('resize', resizeCanvas); */
+
+function resizeCanvas() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const scale = window.devicePixelRatio;
+
+    canvas.width = rect.width * scale;
+    canvas.height = rect.height * scale;
+
+    canvas.style.width = `${rect.width}px`;
+    canvas.style.height = `${rect.height}px`;
+
+    ctx.scale(scale, scale);
+    
+}
+
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(resizeCanvas, 100); // Adjust delay as needed
+});
+
 window.addEventListener("load", resizeCanvas);
 
-/*window.addEventListener("load", () => {
-    // setting canvas width/height.. offsetwidth/height returns viewable width/height of an element
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    setCanvasBackground();
-}); */
+
 
 const drawRect = (e) => {
     // if fillColor isn't checked draw a rect with border else draw rect with background
