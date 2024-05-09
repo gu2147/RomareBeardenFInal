@@ -162,6 +162,14 @@ section{
   text-decoration: underline;
   font-size: 20px;
 }
+
+.gallery-image {
+  display: none; /* Hide all images by default */
+}
+
+.gallery-image.active {
+  display: block; /* Only display the active image */
+}
 .image-gallery {
   grid-column: 3;
   display: flex;
@@ -195,10 +203,10 @@ section{
 }
 
 .prev-image{
-  left: 30px;
+  left: 10px;
 }
 .next-image{
-  right: 30px;
+  right: 10px;
 } 
 .paperOverlay {
   position: absolute;

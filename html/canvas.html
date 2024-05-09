@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://use.typekit.net/pdo2bsf.css">
     <script src="../javascript/script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
   </head>
   <body>
    <div class="navBar">
@@ -47,6 +49,18 @@
               <img src="icons/eraser.svg" alt="">
               <span>Eraser</span>
             </li>
+            <li class="option tool" id="rectangle-select-tool">
+              <img src="icons/rectangle-select.svg" alt="">
+              <span>Rectangle Select</span>
+            </li>
+            <li class="option tool" id="copy-selection">
+              <img src="icons/paste.svg" alt="">
+              <span>Copy</span>
+            </li>
+            <li class="option tool" id="paste-selection">
+              <img src="icons/paste.svg" alt="">
+              <span>Paste</span>
+            </li>
             <li class="option">
               <input type="range" id="size-slider" min="1" max="30" value="5">
             </li>
@@ -74,8 +88,11 @@
       </section>
      <section class="image-gallery">
         <button class="prev-image">&#10094;</button>
-        <img src="../images/beardenHimself.jpeg" alt="Gallery Image" class="gallery-image">
+        <img src="../images/beardenHimself.jpeg" alt="Gallery Image 1" class="gallery-image active" id="image1">
+        <img src="../images/beardenHome.jpeg" alt="Gallery Image 2" class="gallery-image" id="image2">
+        <!-- more images -->
         <button class="next-image">&#10095;</button>
+       
       </section>
     </div>
     <div class="paperOverlay"></div>

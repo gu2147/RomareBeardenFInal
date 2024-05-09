@@ -84,6 +84,7 @@ body{
 .tooltip-trigger {
     position: relative; /* Necessary for absolute positioning of the tooltip */
     cursor: pointer; /* Changes the cursor to indicate it's clickable */
+    font-size: 25px;
     text-decoration: none; /* Optional: Removes underline from the link */
 }
 

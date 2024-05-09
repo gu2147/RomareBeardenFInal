@@ -25,22 +25,6 @@ const setCanvasBackground = () => {
     ctx.fillStyle = selectedColor; // setting fillstyle back to the selectedColor, it'll be the brush color
 }
 
-/*function resizeCanvas() {
-    const containerWidth = document.querySelector('.container').clientWidth - 210; // Subtract toolbar width
-    const canvas = document.querySelector(".drawing-board canvas");
-    const scale = window.devicePixelRatio; // For high DPI screens
-
-    canvas.width = containerWidth * scale; // Apply the scaling for high resolution
-    canvas.style.width = `${containerWidth}px`; // Match the style size to actual size
-    canvas.height = canvas.width * (3/4); // Maintain aspect ratio, adjust as needed
-    canvas.style.height = `${canvas.height / scale}px`;
-
-    const ctx = canvas.getContext("2d");
-    ctx.scale(scale, scale); // Adjust drawing scale to match DPI
-}
-
-window.addEventListener('resize', resizeCanvas); */
-
 function resizeCanvas() {
     const rect = canvas.parentElement.getBoundingClientRect();
     const scale = window.devicePixelRatio;
@@ -117,19 +101,47 @@ const drawing = (e) => {
         drawRect(e);
     } else if(selectedTool === "circle"){
         drawCircle(e);
-    } else {
+    } else if(selectedTool === "triangle") {
         drawTriangle(e);
+    } else if(selectedTool === "rectangle-select-tool"){
+        drawRectangleSelect(e);
     }
 }
 
+// Attach event listener for each tool button
 toolBtns.forEach(btn => {
-    btn.addEventListener("click", () => { // adding click event to all tool option
-        // removing active class from the previous option and adding on current clicked option
+    btn.addEventListener("click", () => {
         document.querySelector(".options .active").classList.remove("active");
         btn.classList.add("active");
         selectedTool = btn.id;
+
+        // Handle Cropper initialization or destruction based on the tool selected
+        if (selectedTool === "rectangle-select-tool") {
+            initializeCropper();
+        } else if (window.activeCropper) {
+            window.activeCropper.destroy();
+            window.activeCropper = null;
+        }
     });
 });
+
+function initializeCropper() {
+    const currentImage = document.querySelector('.gallery-image.active'); // Make sure this selects the visible image
+    if (!currentImage) return;
+
+    if (window.activeCropper) {
+        window.activeCropper.destroy(); // Destroy previous instance if any
+    }
+
+    window.activeCropper = new Cropper(currentImage, {
+        aspectRatio: NaN, // Freeform cropping
+        autoCropArea: 1.0,
+        movable: true,
+        cropBoxResizable: true,
+        dragMode: 'move'
+    });
+}
+
 
 sizeSlider.addEventListener("change", () => brushWidth = sizeSlider.value); // passing slider value as brushSize
 
@@ -164,3 +176,132 @@ saveImg.addEventListener("click", () => {
 canvas.addEventListener("mousedown", startDraw);
 canvas.addEventListener("mousemove", drawing);
 canvas.addEventListener("mouseup", () => isDrawing = false);
+
+/*=========================previous and next images ==============================*/
+const nextButton = document.querySelector('.next-image');
+const prevButton = document.querySelector('.prev-image');
+
+nextButton.addEventListener('click', () => changeImage(1));
+prevButton.addEventListener('click', () => changeImage(-1));
+
+function changeImage(direction) {
+    let currentImage = document.querySelector('.gallery-image.active');
+    let images = document.querySelectorAll('.gallery-image');
+    let index = Array.from(images).indexOf(currentImage);
+
+    currentImage.classList.remove('active');
+    let newIndex = (index + direction + images.length) % images.length;
+    images[newIndex].classList.add('active');
+
+    if (window.activeCropper && selectedTool === "rectangle-select-tool") {
+        window.activeCropper.replace(images[newIndex].src);
+    }
+}
+
+
+/*=========================== Cut And Paste Tool =================================*/ 
+
+
+document.getElementById('paste-selection').addEventListener('click', () => {
+    if (!window.copiedData) {
+        alert("No data to paste! Please copy a selection first.");
+        return;
+    }
+
+    const mainCanvas = document.querySelector("canvas");
+    const ctx = mainCanvas.getContext('2d');
+    ctx.drawImage(window.copiedData, 0, 0);
+    alert("Pasted successfully!");
+});
+
+document.getElementById('copy-selection').addEventListener('click', () => {
+    if (!window.activeCropper) {
+        alert("No selection to copy!");
+        return;
+    }
+
+    window.activeCropper.getCroppedCanvas().then(croppedCanvas => {
+        window.copiedData = croppedCanvas;  // Store the cropped canvas globally
+        alert("Selection copied! Ready to paste."); // Provide feedback
+    });
+});
+
+
+let isCropping = false;
+let cropStartX, cropStartY;
+let rectOverlay;
+
+/*document.getElementById('rectangle-select-tool').addEventListener('click', function() {
+    const currentImage = document.querySelector('.gallery-image:visible'); // Assuming you can distinguish visible images like this
+    if (!currentImage) return;
+
+    if (window.activeCropper) {
+        window.activeCropper.destroy(); // Destroy previous instance if any
+    }
+
+    window.activeCropper = new Cropper(currentImage, {
+        aspectRatio: NaN, // Freeform cropping
+        autoCropArea: 1.0,
+        movable: true,
+        cropBoxResizable: true,
+        dragMode: 'move'
+    });
+});*/
+
+
+const drawRectangleSelect = (e) => {
+    if(isDrawing){
+       /*document.getElementById('rectangle-select-tool').addEventListener('click', function() {
+            const currentImage = document.querySelector('.gallery-image:visible'); // Assuming you can distinguish visible images like this
+            if (!currentImage) return;
+        
+            if (window.activeCropper) {
+                window.activeCropper.destroy(); // Destroy previous instance if any
+            }
+        
+            window.activeCropper = new Cropper(currentImage, {
+                aspectRatio: NaN, // Freeform cropping
+                autoCropArea: 1.0,
+                movable: true,
+                cropBoxResizable: true,
+                dragMode: 'move'
+            }); 
+        });*/
+        const rectt = canvas.getBoundingClientRect;
+        const x = e.clientX - rectt.left;
+        const y = e.clientY - rectt.top;
+
+        if(!isCropping){
+            isCropping = true;
+            cropStartX = x;
+            cropStartY = y;
+            rectOverlay = document.createElement('div');
+            rectOverlay.style.position = 'absolute';
+            rectOverlay.style.border = '2px dashed red';
+            rectOverlay.style.left = `${cropStartX}px`;
+            rectOverlay.style.top = `${cropStartY}px`;
+            document.body.appendChild(rectOverlay);
+
+        } else{
+            rectOverlay.style.width = `${Math.abs(x - cropStartX)}px`;
+            rectOverlay.style.height = `${Math.abs(y - cropStartY)}px`;
+            if(e.type === 'mouseup'){
+                isCropping = false;
+                finalizeCrop(cropStartX, cropStartY, Math.abs(x - cropStartX), Math.abs(y - cropStartY));
+                document.body.removeChild(rectOverlay);
+            }
+        }
+        
+    }
+};
+
+const finalizeCrop = (x, y, width, height) =>{
+    selectedRegion = cropImageFromGallery(galleryImage, x, y, width, height);
+
+};
+
+
+
+
+
+
