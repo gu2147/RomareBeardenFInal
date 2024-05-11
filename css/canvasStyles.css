@@ -151,11 +151,31 @@ section{
 }
 
 .navBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: absolute;
-  top: 10px;
-  left: 10px;
-  
+  width: 100%; /* Ensure it spans the full width */
+  top: 10px; /* Adjust top spacing as needed */
+  left: 0;
+  padding: 0 10px; /* Padding on sides to ensure content is not flush against screen edges */
 }
+
+.navItem {
+  text-decoration: none;
+  color: black;
+  font-family: "adorn-copperplate", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 18px; /* Smaller font size for instructions and next button */
+}
+
+.backHome {
+  font-size: 20px; /* Larger font size for Back to Home */
+}
+
+
+
 .backHome{
   font-family: "adorn-copperplate", sans-serif;
   font-weight: 600;

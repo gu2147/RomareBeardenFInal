@@ -47,28 +47,28 @@ window.addEventListener("load", resizeCanvas);
 
 //Drawing functions for different shapes and image brush
 const drawRect = (e) => {
-    ctx.putImageData(snapshot, 0, 0);
-    ctx[fillColor.checked ? 'fillRect' : 'strokeRect'](prevMouseX, prevMouseY, e.offsetX - prevMouseX, e.offsetY - prevMouseY);
+    if (!fillColor.checked) {
+        ctx.strokeRect(prevMouseX, prevMouseY, e.offsetX - prevMouseX, e.offsetY - prevMouseY);
+    } else {
+        ctx.fillRect(prevMouseX, prevMouseY, e.offsetX - prevMouseX, e.offsetY - prevMouseY);
+    }
 };
 
 const drawCircle = (e) => {
-    ctx.putImageData(snapshot, 0, 0);
-    ctx.beginPath();
     let radius = Math.sqrt((prevMouseX - e.offsetX) ** 2 + (prevMouseY - e.offsetY) ** 2);
+    ctx.beginPath();
     ctx.arc(prevMouseX, prevMouseY, radius, 0, 2 * Math.PI);
-    ctx[fillColor.checked ? 'fill' : 'stroke']();
+    fillColor.checked ? ctx.fill() : ctx.stroke();
 };
 
 const drawTriangle = (e) => {
-    ctx.putImageData(snapshot, 0, 0);
     ctx.beginPath();
     ctx.moveTo(prevMouseX, prevMouseY);
     ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.lineTo(prevMouseX * 2 - e.offsetX, e.offsetY);
+    ctx.lineTo(2 * prevMouseX - e.offsetX, e.offsetY);
     ctx.closePath();
-    ctx[fillColor.checked ? 'fill' : 'stroke']();
+    fillColor.checked ? ctx.fill() : ctx.stroke();
 };
-
 const drawImageBrush = (x, y) => {
     if (imageBrush) {
         const size = brushWidth * 10; // Multiply by a factor to make the image larger
@@ -84,6 +84,10 @@ const startDraw = (e) => {
     prevMouseX = e.offsetX;
     prevMouseY = e.offsetY;
     snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();  // Start a new path to ensure lines are not connected
+    ctx.lineWidth = brushWidth;
+    ctx.strokeStyle = selectedColor;
+    ctx.fillStyle = selectedColor;
 };
 
 const drawing = (e) => {
@@ -204,4 +208,3 @@ document.getElementById('info-btn').addEventListener('click', () => {
 document.querySelector('.close-btn').addEventListener('click', () => {
     document.getElementById('info-popup').style.display = 'none';
 });
-
