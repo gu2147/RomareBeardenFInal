@@ -1,307 +1,207 @@
-const canvas = document.querySelector("canvas"),
-toolBtns = document.querySelectorAll(".tool"),
-fillColor = document.querySelector("#fill-color"),
-sizeSlider = document.querySelector("#size-slider"),
-colorBtns = document.querySelectorAll(".colors .option"),
-colorPicker = document.querySelector("#color-picker"),
-clearCanvas = document.querySelector(".clear-canvas"),
-saveImg = document.querySelector(".save-img"),
-ctx = canvas.getContext("2d");
+//HTML elements
+const canvas = document.querySelector("canvas");
+const toolBtns = document.querySelectorAll(".tool");
+const fillColor = document.querySelector("#fill-color");
+const sizeSlider = document.querySelector("#size-slider");
+const colorBtns = document.querySelectorAll(".colors .option");
+const colorPicker = document.querySelector("#color-picker");
+const clearCanvas = document.querySelector(".clear-canvas");
+const saveImg = document.querySelector(".save-img");
+const nextButton = document.querySelector('.next-image');
+const prevButton = document.querySelector('.prev-image');
 
-// global variables with default value
-let prevMouseX, prevMouseY, snapshot,
-isDrawing = false,
-selectedTool = "brush",
-brushWidth = 5,
-selectedColor = "#000";
+//Canvas context and global variables
+const ctx = canvas.getContext("2d");
+let prevMouseX, prevMouseY, snapshot;
+let isDrawing = false;
+let selectedTool = "brush";
+let brushWidth = 5;
+let selectedColor = "#000";
+let imageBrush = null; // Handles the image brush
 
-
-
-
+//Set canvas background to white
 const setCanvasBackground = () => {
-    // setting whole canvas background to white, so the downloaded img background will be white
     ctx.fillStyle = "#fff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = selectedColor; // setting fillstyle back to the selectedColor, it'll be the brush color
-}
+    ctx.fillStyle = selectedColor;
+};
 
-function resizeCanvas() {
+//Resize the canvas to match its parent container
+const resizeCanvas = () => {
     const rect = canvas.parentElement.getBoundingClientRect();
     const scale = window.devicePixelRatio;
-
     canvas.width = rect.width * scale;
     canvas.height = rect.height * scale;
-
     canvas.style.width = `${rect.width}px`;
     canvas.style.height = `${rect.height}px`;
-
     ctx.scale(scale, scale);
-    
-}
+};
 
+//Debounce resize events for performance
 let resizeTimeout;
-window.addEventListener('resize', () => {
+window.addEventListener("resize", () => {
     clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(resizeCanvas, 100); // Adjust delay as needed
+    resizeTimeout = setTimeout(resizeCanvas, 100);
 });
-
 window.addEventListener("load", resizeCanvas);
 
-
-
+//Drawing functions for different shapes and image brush
 const drawRect = (e) => {
-    // if fillColor isn't checked draw a rect with border else draw rect with background
-    if(!fillColor.checked) {
-        // creating circle according to the mouse pointer
-        return ctx.strokeRect(e.offsetX, e.offsetY, prevMouseX - e.offsetX, prevMouseY - e.offsetY);
-    }
-    ctx.fillRect(e.offsetX, e.offsetY, prevMouseX - e.offsetX, prevMouseY - e.offsetY);
-}
+    ctx.putImageData(snapshot, 0, 0);
+    ctx[fillColor.checked ? 'fillRect' : 'strokeRect'](prevMouseX, prevMouseY, e.offsetX - prevMouseX, e.offsetY - prevMouseY);
+};
 
 const drawCircle = (e) => {
-    ctx.beginPath(); // creating new path to draw circle
-    // getting radius for circle according to the mouse pointer
-    let radius = Math.sqrt(Math.pow((prevMouseX - e.offsetX), 2) + Math.pow((prevMouseY - e.offsetY), 2));
-    ctx.arc(prevMouseX, prevMouseY, radius, 0, 2 * Math.PI); // creating circle according to the mouse pointer
-    fillColor.checked ? ctx.fill() : ctx.stroke(); // if fillColor is checked fill circle else draw border circle
-}
+    ctx.putImageData(snapshot, 0, 0);
+    ctx.beginPath();
+    let radius = Math.sqrt((prevMouseX - e.offsetX) ** 2 + (prevMouseY - e.offsetY) ** 2);
+    ctx.arc(prevMouseX, prevMouseY, radius, 0, 2 * Math.PI);
+    ctx[fillColor.checked ? 'fill' : 'stroke']();
+};
 
 const drawTriangle = (e) => {
-    ctx.beginPath(); // creating new path to draw circle
-    ctx.moveTo(prevMouseX, prevMouseY); // moving triangle to the mouse pointer
-    ctx.lineTo(e.offsetX, e.offsetY); // creating first line according to the mouse pointer
-    ctx.lineTo(prevMouseX * 2 - e.offsetX, e.offsetY); // creating bottom line of triangle
-    ctx.closePath(); // closing path of a triangle so the third line draw automatically
-    fillColor.checked ? ctx.fill() : ctx.stroke(); // if fillColor is checked fill triangle else draw border
-}
+    ctx.putImageData(snapshot, 0, 0);
+    ctx.beginPath();
+    ctx.moveTo(prevMouseX, prevMouseY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.lineTo(prevMouseX * 2 - e.offsetX, e.offsetY);
+    ctx.closePath();
+    ctx[fillColor.checked ? 'fill' : 'stroke']();
+};
 
+const drawImageBrush = (x, y) => {
+    if (imageBrush) {
+        const size = brushWidth * 10; // Multiply by a factor to make the image larger
+        ctx.drawImage(imageBrush, x - size / 2, y - size / 2, size, size);
+    }
+};
+
+
+
+//Event handling for drawing
 const startDraw = (e) => {
     isDrawing = true;
-    prevMouseX = e.offsetX; // passing current mouseX position as prevMouseX value
-    prevMouseY = e.offsetY; // passing current mouseY position as prevMouseY value
-    ctx.beginPath(); // creating new path to draw
-    ctx.lineWidth = brushWidth; // passing brushSize as line width
-    ctx.strokeStyle = selectedColor; // passing selectedColor as stroke style
-    ctx.fillStyle = selectedColor; // passing selectedColor as fill style
-    // copying canvas data & passing as snapshot value.. this avoids dragging the image
+    prevMouseX = e.offsetX;
+    prevMouseY = e.offsetY;
     snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
-}
+};
 
 const drawing = (e) => {
-    if(!isDrawing) return; // if isDrawing is false return from here
-    ctx.putImageData(snapshot, 0, 0); // adding copied canvas data on to this canvas
-
-    if(selectedTool === "brush" || selectedTool === "eraser") {
-        // if selected tool is eraser then set strokeStyle to white 
-        // to paint white color on to the existing canvas content else set the stroke color to selected color
-        ctx.strokeStyle = selectedTool === "eraser" ? "#fff" : selectedColor;
-        ctx.lineTo(e.offsetX, e.offsetY); // creating line according to the mouse pointer
-        ctx.stroke(); // drawing/filling line with color
-    } else if(selectedTool === "rectangle"){
+    if (!isDrawing) return;
+    if (['brush', 'eraser', 'rectangle', 'circle', 'triangle', 'imageBrush'].includes(selectedTool)) {
+        ctx.putImageData(snapshot, 0, 0);
+    }
+    
+    if (selectedTool === 'brush' || selectedTool === 'eraser') {
+        ctx.strokeStyle = selectedTool === 'eraser' ? '#fff' : selectedColor;
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+    } else if (selectedTool === 'rectangle') {
         drawRect(e);
-    } else if(selectedTool === "circle"){
+    } else if (selectedTool === 'circle') {
         drawCircle(e);
-    } else if(selectedTool === "triangle") {
+    } else if (selectedTool === 'triangle') {
         drawTriangle(e);
-    } else if(selectedTool === "rectangle-select-tool"){
-        drawRectangleSelect(e);
+    } else if (selectedTool === 'imageBrush') {
+        drawImageBrush(e.offsetX, e.offsetY);
     }
-}
-
-// Attach event listener for each tool button
-toolBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-        document.querySelector(".options .active").classList.remove("active");
-        btn.classList.add("active");
-        selectedTool = btn.id;
-
-        // Handle Cropper initialization or destruction based on the tool selected
-        if (selectedTool === "rectangle-select-tool") {
-            initializeCropper();
-        } else if (window.activeCropper) {
-            window.activeCropper.destroy();
-            window.activeCropper = null;
-        }
-    });
-});
-
-function initializeCropper() {
-    const currentImage = document.querySelector('.gallery-image.active'); // Make sure this selects the visible image
-    if (!currentImage) return;
-
-    if (window.activeCropper) {
-        window.activeCropper.destroy(); // Destroy previous instance if any
-    }
-
-    window.activeCropper = new Cropper(currentImage, {
-        aspectRatio: NaN, // Freeform cropping
-        autoCropArea: 1.0,
-        movable: true,
-        cropBoxResizable: true,
-        dragMode: 'move'
-    });
-}
-
-
-sizeSlider.addEventListener("change", () => brushWidth = sizeSlider.value); // passing slider value as brushSize
-
-colorBtns.forEach(btn => {
-    btn.addEventListener("click", () => { // adding click event to all color button
-        // removing selected class from the previous option and adding on current clicked option
-        document.querySelector(".options .selected").classList.remove("selected");
-        btn.classList.add("selected");
-        // passing selected btn background color as selectedColor value
-        selectedColor = window.getComputedStyle(btn).getPropertyValue("background-color");
-    });
-});
-
-colorPicker.addEventListener("change", () => {
-    // passing picked color value from color picker to last color btn background
-    colorPicker.parentElement.style.background = colorPicker.value;
-    colorPicker.parentElement.click();
-});
-
-clearCanvas.addEventListener("click", () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // clearing whole canvas
-    setCanvasBackground();
-});
-
-saveImg.addEventListener("click", () => {
-    const link = document.createElement("a"); // creating <a> element
-    link.download = `${Date.now()}.jpg`; // passing current date as link download value
-    link.href = canvas.toDataURL(); // passing canvasData as link href value
-    link.click(); // clicking link to download image
-});
+};
 
 canvas.addEventListener("mousedown", startDraw);
 canvas.addEventListener("mousemove", drawing);
 canvas.addEventListener("mouseup", () => isDrawing = false);
 
-/*=========================previous and next images ==============================*/
-const nextButton = document.querySelector('.next-image');
-const prevButton = document.querySelector('.prev-image');
-
-nextButton.addEventListener('click', () => changeImage(1));
-prevButton.addEventListener('click', () => changeImage(-1));
-
-function changeImage(direction) {
-    let currentImage = document.querySelector('.gallery-image.active');
-    let images = document.querySelectorAll('.gallery-image');
-    let index = Array.from(images).indexOf(currentImage);
-
-    currentImage.classList.remove('active');
-    let newIndex = (index + direction + images.length) % images.length;
-    images[newIndex].classList.add('active');
-
-    if (window.activeCropper && selectedTool === "rectangle-select-tool") {
-        window.activeCropper.replace(images[newIndex].src);
-    }
-}
-
-
-/*=========================== Cut And Paste Tool =================================*/ 
-
-
-document.getElementById('paste-selection').addEventListener('click', () => {
-    if (!window.copiedData) {
-        alert("No data to paste! Please copy a selection first.");
-        return;
-    }
-
-    const mainCanvas = document.querySelector("canvas");
-    const ctx = mainCanvas.getContext('2d');
-    ctx.drawImage(window.copiedData, 0, 0);
-    alert("Pasted successfully!");
-});
-
-document.getElementById('copy-selection').addEventListener('click', () => {
-    if (!window.activeCropper) {
-        alert("No selection to copy!");
-        return;
-    }
-
-    window.activeCropper.getCroppedCanvas().then(croppedCanvas => {
-        window.copiedData = croppedCanvas;  // Store the cropped canvas globally
-        alert("Selection copied! Ready to paste."); // Provide feedback
+//Tool button selection and configuration
+toolBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.querySelector(".options .active")?.classList.remove("active");
+        btn.classList.add("active");
+        selectedTool = btn.id; 
     });
 });
 
+sizeSlider.addEventListener("change", () => brushWidth = sizeSlider.value);
+colorBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.querySelector(".options .selected").classList.remove("selected");
+        btn.classList.add("selected");
+        selectedColor = window.getComputedStyle(btn).getPropertyValue("background-color");
+    });
+});
+colorPicker.addEventListener("change", () => {
+    selectedColor = colorPicker.value;
+    colorPicker.parentElement.style.background = colorPicker.value;
+});
 
-let isCropping = false;
-let cropStartX, cropStartY;
-let rectOverlay;
+clearCanvas.addEventListener("click", () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setCanvasBackground();
+});
 
-/*document.getElementById('rectangle-select-tool').addEventListener('click', function() {
-    const currentImage = document.querySelector('.gallery-image:visible'); // Assuming you can distinguish visible images like this
-    if (!currentImage) return;
+saveImg.addEventListener("click", () => {
+    const link = document.createElement("a");
+    link.download = "canvas_image.jpg";
+    link.href = canvas.toDataURL("image/jpeg", 1.0);
+    link.click();
+});
 
-    if (window.activeCropper) {
-        window.activeCropper.destroy(); // Destroy previous instance if any
-    }
-
-    window.activeCropper = new Cropper(currentImage, {
-        aspectRatio: NaN, // Freeform cropping
-        autoCropArea: 1.0,
-        movable: true,
-        cropBoxResizable: true,
-        dragMode: 'move'
+//Image selection and scrolling
+/*document.querySelectorAll('.image-options .option').forEach(item => {
+    item.addEventListener('click', function() {
+        const imageSrc = this.getAttribute('data-image');
+        const img = new Image();
+        img.onload = () => { imageBrush = img; };
+        img.src = imageSrc;
+        selectedTool = 'imageBrush';  //Switch to image brush tool when an image is selected
     });
 });*/
 
+const upBtn = document.querySelector('.up-btn');
+const downBtn = document.querySelector('.down-btn');
+const imageOptions = document.querySelector('.image-options');
 
-const drawRectangleSelect = (e) => {
-    if(isDrawing){
-       /*document.getElementById('rectangle-select-tool').addEventListener('click', function() {
-            const currentImage = document.querySelector('.gallery-image:visible'); // Assuming you can distinguish visible images like this
-            if (!currentImage) return;
-        
-            if (window.activeCropper) {
-                window.activeCropper.destroy(); // Destroy previous instance if any
-            }
-        
-            window.activeCropper = new Cropper(currentImage, {
-                aspectRatio: NaN, // Freeform cropping
-                autoCropArea: 1.0,
-                movable: true,
-                cropBoxResizable: true,
-                dragMode: 'move'
-            }); 
-        });*/
-        const rectt = canvas.getBoundingClientRect;
-        const x = e.clientX - rectt.left;
-        const y = e.clientY - rectt.top;
+upBtn.addEventListener('click', () => imageOptions.scrollBy(0, -30));
+downBtn.addEventListener('click', () => imageOptions.scrollBy(0, 30));
 
-        if(!isCropping){
-            isCropping = true;
-            cropStartX = x;
-            cropStartY = y;
-            rectOverlay = document.createElement('div');
-            rectOverlay.style.position = 'absolute';
-            rectOverlay.style.border = '2px dashed red';
-            rectOverlay.style.left = `${cropStartX}px`;
-            rectOverlay.style.top = `${cropStartY}px`;
-            document.body.appendChild(rectOverlay);
 
-        } else{
-            rectOverlay.style.width = `${Math.abs(x - cropStartX)}px`;
-            rectOverlay.style.height = `${Math.abs(y - cropStartY)}px`;
-            if(e.type === 'mouseup'){
-                isCropping = false;
-                finalizeCrop(cropStartX, cropStartY, Math.abs(x - cropStartX), Math.abs(y - cropStartY));
-                document.body.removeChild(rectOverlay);
-            }
-        }
-        
-    }
+
+//Switch between images in the gallery
+const changeImage = (direction) => {
+    const images = document.querySelectorAll('.gallery-image');
+    const currentIndex = Array.from(images).findIndex(image => image.classList.contains('active'));
+    const nextIndex = (currentIndex + direction + images.length) % images.length;
+
+    images[currentIndex].classList.remove('active');
+    images[nextIndex].classList.add('active');
 };
 
-const finalizeCrop = (x, y, width, height) =>{
-    selectedRegion = cropImageFromGallery(galleryImage, x, y, width, height);
+document.querySelector('.prev-image').addEventListener('click', () => changeImage(-1));
+document.querySelector('.next-image').addEventListener('click', () => changeImage(1));
 
-};
+//Images Tool bar switching 
+upBtn.addEventListener('click', () => {
+  imageOptions.scrollBy(0, -30); // Scrolls up
+});
 
+downBtn.addEventListener('click', () => {
+  imageOptions.scrollBy(0, 30); // Scrolls down
+});
+document.querySelectorAll('.image-options .option').forEach(item => {
+    item.addEventListener('click', function() {
+        const imageSrc = this.getAttribute('data-image-src'); // Make sure the attribute is correctly named in your HTML
+        imageBrush = new Image();
+        imageBrush.onload = () => {
+            selectedTool = 'imageBrush'; // Switch to image brush tool when an image is loaded
+        };
+        imageBrush.src = imageSrc;
+    });
+});
 
+document.getElementById('info-btn').addEventListener('click', () => {
+    document.getElementById('info-popup').style.display = 'block';
+});
 
-
-
+document.querySelector('.close-btn').addEventListener('click', () => {
+    document.getElementById('info-popup').style.display = 'none';
+});
 

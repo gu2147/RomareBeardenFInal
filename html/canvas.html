@@ -13,9 +13,24 @@
   <body>
    <div class="navBar">
       <a href="../index.html" class="backHome">Back to Home</a>
+      <div class="info-button-container">
+        <button id="info-btn">How to Use</button>
+        <div id="info-popup" class="info-popup" style="display:none;">
+            <span class="close-btn">&times;</span>
+            <p>Here's some information about how to use the canvas... Battle with the Cicones" captures the grim consequences faced by Odysseus and 
+              his crew after sacking the city of the Cicones. Romare Bearden's collage technique, 
+              characterized by dynamic textures and contrasting colors, portrays the chaos and brutality of the Greeks’ overconfidence. 
+              Fragmented human figures are layered across the scene, creating a whirl of motion 
+              that mirrors the confusion and disarray of battle. In deep reds and cool blues, Bearden hints at both the 
+              bloodshed and the encroaching nightfall, which obscure the boundaries between victor and vanquished. 
+              This imagery conveys the bitter irony of conquest, where the Greeks’ hubris l
+              eads to the Cicones' swift reprisal. By blending elements of classical mythology and African heritage, 
+              Bearden transforms this episode into a timeless reflection on human folly and the high cost of unchecked ambition.</p>
+        </div>
+    </div>
+    
     </div>
     <div class="container">
-      
       <section class="tools-board">
         <div class="row">
           <label class="title">Shapes</label>
@@ -38,6 +53,25 @@
             </li>
           </ul>
         </div>
+          <div class="row">
+            <label class="title">Images</label>
+            <div class="image-scroll">
+              <button class="scroll-btn up-btn">&#9650;</button>
+              <ul class="image-options">
+                <!-- Ensure data-image-src is set correctly on each item -->
+                <li class="option tool" data-image-src="../images/beardenHimself.jpeg"><span>Bearden Portrait</span></li>
+                <li class="option tool" data-image-src="../images/theFallofTroy.jpeg.webp"><span>Fall of Troy</span></li>
+                <li class="option tool" data-image-src="../images/cattleOfTheSunGod.jpeg"><span>Cattle of Sun</span></li>
+                <li class="option tool" data-image-src="../images/posiden,TheSeaGod.webp"><span>Posiden</span></li>
+                <li class="option tool" data-image-src="../images/circe.jpeg"><span>Circe</span></li>
+                <li class="option tool" data-image-src="../images/battleWithCicones.jpeg.webp"><span>Battle of Cicones</span></li>
+                <li class="option tool" data-image-src="../images/OdysseusLeavesCirce.webp"><span>Odysseus Leaves Circe</span></li>
+                <li class="option tool" data-image-src="../images/homeToIthaca.webp"><span>Home to Ithaca</span></li>
+                <!-- More images can be added here -->
+              </ul>
+              <button class="scroll-btn down-btn">&#9660;</button>
+            </div>
+          </div>
         <div class="row">
           <label class="title">Options</label>
           <ul class="options">
@@ -48,18 +82,6 @@
             <li class="option tool" id="eraser">
               <img src="icons/eraser.svg" alt="">
               <span>Eraser</span>
-            </li>
-            <li class="option tool" id="rectangle-select-tool">
-              <img src="icons/rectangle-select.svg" alt="">
-              <span>Rectangle Select</span>
-            </li>
-            <li class="option tool" id="copy-selection">
-              <img src="icons/paste.svg" alt="">
-              <span>Copy</span>
-            </li>
-            <li class="option tool" id="paste-selection">
-              <img src="icons/paste.svg" alt="">
-              <span>Paste</span>
             </li>
             <li class="option">
               <input type="range" id="size-slider" min="1" max="30" value="5">
@@ -89,7 +111,14 @@
      <section class="image-gallery">
         <button class="prev-image">&#10094;</button>
         <img src="../images/beardenHimself.jpeg" alt="Gallery Image 1" class="gallery-image active" id="image1">
-        <img src="../images/beardenHome.jpeg" alt="Gallery Image 2" class="gallery-image" id="image2">
+        <img src="../images/battleWithCicones.jpeg.webp" alt="Gallery Image 2" class="gallery-image" id="image2">
+        <img src="../images/cattleOfTheSunGod.jpeg" alt="Gallery Image 3" class="gallery-image" id="image3">
+        <img src="../images/circe.jpeg" alt="Gallery Image 4" class="gallery-image" id="image4">
+        <img src="../images/homeToIthaca.webp" alt="Gallery Image 5" class="gallery-image" id="image5">
+        <img src="../images/OdysseusLeavesCirce.webp" alt="Gallery Image 6" class="gallery-image" id="image6">
+        <img src="../images/posiden,TheSeaGod.webp" alt="Gallery Image 7" class="gallery-image" id="image7">
+        <img src="../images/theFallofTroy.jpeg.webp" alt="Gallery Image 8" class="gallery-image" id="image8">
+
         <!-- more images -->
         <button class="next-image">&#10095;</button>
        

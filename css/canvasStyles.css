@@ -12,7 +12,7 @@ body{
   justify-content: center;
   margin-top: 60px;
   background: #EAD2BA;
-  overflow: hidden; 
+  /*overflow: hidden; */
 }
 .container{
   display: flex;
@@ -29,6 +29,7 @@ section{
 .tools-board{
   width: 210px;
   padding: 15px 22px 0;
+  
 }
 .tools-board .row{
   margin-bottom: 20px;
@@ -130,6 +131,7 @@ section{
   border: 1px solid #6C757D;
   transition: all 0.3s ease;
 }
+
 .clear-canvas:hover{
   color: #fff;
   background: #6C757D;
@@ -181,13 +183,15 @@ section{
   height: auto;
   position: relative;
   padding: 0 30px;
-  /*background:#EAD2BA;*/
+  background:transparent;
+  z-index: 1000;
 
 }
 
 .image-gallery img{
   max-width: 100%;
   max-height: 80vh;
+  z-index: 1000;
 }
 
 .prev-image, .next-image{
@@ -204,10 +208,51 @@ section{
 
 .prev-image{
   left: 10px;
+  
 }
 .next-image{
   right: 10px;
 } 
+
+.image-scroll {
+  position: relative;
+  height: 100px; /* Adjust based on your UI */
+  overflow: hidden;
+}
+
+.image-options {
+  list-style: none;
+  overflow: auto;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.scroll-btn {
+  position: absolute;
+  width: 100%;
+  border: none;
+  background: #ccc;
+  color: #333;
+  cursor: pointer;
+}
+
+.up-btn {
+  top: 0;
+  background: transparent;
+}
+
+.down-btn {
+  bottom: 0;
+  background: transparent;
+}
+
+.image-options li {
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
 .paperOverlay {
   position: absolute;
   top: 0px;
@@ -220,3 +265,36 @@ section{
   pointer-events: none;
   z-index: 1;
 }
+
+
+.info-popup {
+    font-family: "adorn-copperplate", sans-serif;
+   font-weight: 600;
+   font-style: normal;
+   color: black;
+    position: fixed;
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    top: 20px;
+    right: 20px;
+    z-index: 5001; 
+}
+
+ 
+
+.close-btn {
+  float: right;
+  cursor: pointer;
+}
+
+.info-button-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;  // Adjust as necessary to position correctly
+  z-index: 5001;  // Ensure this is high enough to be above other page content
+}
+
+

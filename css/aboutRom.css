@@ -16,26 +16,27 @@ body{
     justify-content: center;
     align-items: flex-start;
     height: 100%;
-    transform: scale(0.56);  /* Consider adjusting this scaling for better responsiveness */
+    transform: scale(0.56);  
     transform-origin: top center;
-    
+    /*overflow: hidden;*/
    
 }
 .gallery-container {
     max-width: 1200px; /* Maximum size of the cover */
     width: 80%;
     padding-top: 20px;
-    padding-bottom: 640px;
+    padding-bottom: 20px;
     background: #EAD2BA;
-    display: grid;
+    display: column;
     gap: 20px;
     align-items: center;
+    box-shadow: 0px 10px 6px rgba(0, 0, 0, 0.8);
     
 }
 .thick-line, .medium-line, .thin-line {
     position: absolute;
-    left: 30px; /* Starts a bit from the left, adjust as needed */
-    right: 30px; /* Ends a bit from the right, adjust as needed */
+    left: 30px; /* Starts a bit from the left */
+    right: 30px; /* Ends a bit from the right */
 
 }
 
@@ -122,7 +123,6 @@ body{
     font-style: italic;
     font-size: 20px;
 }
-/* Consistent Styles Across All Gallery Items */
 
 
 .leftHeader, .titleHeader, .dateHeader {
@@ -157,18 +157,27 @@ body{
 }
 
 .gallery-item {
-    display: flex;
+    display: block;
+    flex-direction: column; /* Organize content in a column */
     gap: 20px; /* Space between text and image */
-    align-items: center; /* Centers content vertically */
-    padding-bottom: 5px;
+    align-items: center; /* Centers content horizontally */
+    padding-bottom: 20px; /* Adds spacing below */
 }
-
+.gallery-container img{
+    width:500px;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
 .gallery-item img {
-    padding-left: 40px;
-    width: 100%;
-    /* height: auto; Adjusts height automatically */
-    /*box-shadow: 30px 4px 6px rgba(0,0,0,0.1);*/
-   height: auto;
+    
+    width: 300px;
+    height: 600px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
 }
 
 .title{
@@ -177,6 +186,31 @@ body{
     font-weight: bold;
     text-align: center;
 }
+
+.navigation {
+    display: flex;
+    justify-content: space-between; /* Aligns the buttons on opposite ends /
+    padding: 10px; / Adds some padding around the buttons for better spacing /
+    margin-top: 20px; / Adds space above the navigation bar */
+}
+
+.button1, .button2 {
+    background-color: transparent;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+.button:hover {
+    background-color: #ddd;
+}
+
+
 
 .paperOverlay {
     position: absolute;
